@@ -26,6 +26,21 @@ func run(w http.ResponseWriter, r *http.Request)  {
 	password := r.Form.Get("password")
 	step := r.Form.Get("step")
 
+	if username == "" {
+		fmt.Fprintf(w, `{"code":0,"message":"帐号不能为空"}`)
+		return
+	}
+
+	if password == "" {
+		fmt.Fprintf(w, `{"code":0,"message":"密码不能为空"}`)
+		return
+	}
+
+	if step == "" {
+		fmt.Fprintf(w, `{"code":0,"message":"步数不能为空"}`)
+		return
+	}
+
 	token,err := xiaomi.Login(username,password)
 	if err != nil{
 		fmt.Fprintf(w, `{"code":0,"message":"登录失败"}`)
