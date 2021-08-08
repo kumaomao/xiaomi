@@ -1,0 +1,129 @@
+
+
+<!DOCTYPE html>
+<html lang="cn">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>跑得快—运动步数在线修改</title>
+    <meta name="Description" content="运动步数在线修改" />
+    <meta name="Keywords" content="运动步数在线修改" />
+    <link rel="stylesheet" href="file/bootstrap.min.css">
+    <link rel="shortcut icon" href="https://gss0.bdstatic.com/5eR1dDebRNRTm2_p8IuM_a/her/static/qiusuo/img/zhi-fav.04b49a3.png">
+</head>
+<body style="background-color: #EBEDEF;">
+<div class="container" style="margin-top: 20px;">
+    <div class="jumbotron" style="background-color: #F8F9F9;">
+        <h2 class="display-4">跑得快</h2>
+        <hr class="my-4">
+        <p>自定义步数支持</p>
+        <p>支持微信、QQ、支付宝</p>
+        <p>刷的步数切勿用于捐赠 封号后果自负</p>
+        <a target="_blank" href="https://docs.qq.com/doc/DQXlhZGhFV0FHbVdP" class="badge badge-pill badge-primary">帮助</a>
+    </div>
+    <div class="wrap" style="background-color: #F8F9F9;">
+        <div class="container-top" id="list">
+        <ul class="nav nav-pills nav-fill" style="margin-bottom: 20px;">
+            <li id="xiaomi_li" class="nav-item" style="margin-top: 5px;margin-right: 20px;margin-left: 20px;">
+            </ul>       
+        </div>  
+<div id="lexin_form" style="display: block;">
+            <form id="form" style="padding-bottom: 20px;margin-left: 20px;margin-right: 20px">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">小米运动账号</span>
+                    </div>
+                    <input type="text" class="form-control" id="xiaomi_username" placeholder="请输入小米运动账号">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">小米运动密码</span>
+                    </div>
+                    <input type="password" class="form-control" id="xiaomi_password" placeholder="请输入小米运动密码">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">输入运动步数</span>
+                    </div>
+                    <input type="number" class="form-control" id="xiaomi_step" placeholder="1~100000">
+                </div>
+                <button type="button" class="btn btn-primary btn-lg btn-block" id="xiaomi_submit">提交</button>
+            </form>
+        </div>
+        
+    </div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">温馨提醒</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/>
+<div class="container">
+      <hr>
+      <footer>
+        <p align="center">&copy; 
+        <script type="text/javascript">
+            var date = new Date();var year = date.getFullYear();document.write(year);
+        </script> 
+        Created by kumaomao </p>
+      </footer>
+    </div>
+<script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+<script src="file/bootstrap.min.js"></script>
+<script>
+    $(function($) {
+     
+        // modal ('紧急公告','小米刷步官方开始封号，导致无法刷步，解决办法如下:</br></br>进入小米运动APP点-我的-设置-账号与安全-点注销账号-点清除数据。等待几分钟，重新上号，绑定要刷步的应用，即可继续使用。</br></br>如还是不可用，则注销账号，重新注册使用')
+        
+        $('#xiaomi_submit').on('click', function () {
+            var username = $('#xiaomi_username').val();
+            var password = $('#xiaomi_password').val();
+            var step = $('#xiaomi_step').val();
+            $.ajax('/run', {
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                type: 'POST',
+                data: {
+                    'user': username,
+                    'password': password,
+                    'step' : step
+                },
+                dataType: 'json',
+                error: function (request, error, thrown) {
+                    modal('出错啦', thrown)
+                },
+                success: function (data, status) {
+                    modal('温馨提醒', data.message)
+                },
+            });
+        });
+        
+        
+
+        function modal(title, body) {
+            $('#modal-title').html(title);
+            $('#modal-body').html(body);
+            $('#modal').modal('show');
+        }
+    });
+</script>
+
+
+</body>
+</html>
